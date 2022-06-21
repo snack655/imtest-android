@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kr.hs.dgsw.history.imtest.R
@@ -24,7 +25,21 @@ class MainActivity : AppCompatActivity() {
         performDataBinding()
         initViewPager()
 
-        
+        with(viewModel) {
+            EVENT_ON_CLICK_FIRST_IMAGE.observe(this@MainActivity) {
+                nextPage()
+            }
+
+            EVENT_ON_CLICK_SECOND_IMAGE.observe(this@MainActivity) {
+                nextPage()
+            }
+        }
+
+    }
+
+    private fun nextPage() {
+        val current = binding.vpQuestion.currentItem
+        binding.vpQuestion.setCurrentItem(current + 1, true)
     }
 
     private fun initViewPager() {
@@ -70,5 +85,10 @@ class MainActivity : AppCompatActivity() {
         binding.vm = viewModel
         binding.lifecycleOwner = this
         binding.executePendingBindings()
+    }
+
+    companion object {
+        val EVENT_ON_CLICK_FIRST_IMAGE = MutableLiveData<Int>()
+        val EVENT_ON_CLICK_SECOND_IMAGE = MutableLiveData<Int>()
     }
 }

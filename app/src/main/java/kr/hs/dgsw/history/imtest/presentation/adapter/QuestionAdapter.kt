@@ -10,6 +10,7 @@ import kr.hs.dgsw.history.imtest.R
 import kr.hs.dgsw.history.imtest.databinding.ItemQuestionBinding
 import kr.hs.dgsw.history.imtest.domain.model.question.Question
 import kr.hs.dgsw.history.imtest.presentation.adapter.callback.QuestionDiffUtilCallback
+import kr.hs.dgsw.history.imtest.presentation.main.MainActivity
 
 class QuestionAdapter : ListAdapter<Question, QuestionAdapter.QuestionViewHolder>(QuestionDiffUtilCallback) {
 
@@ -29,6 +30,14 @@ class QuestionAdapter : ListAdapter<Question, QuestionAdapter.QuestionViewHolder
                 .error(R.drawable.default_img)
                 .centerCrop()
                 .into(binding.ivFirstAnswer)
+
+            binding.ivFirstAnswer.setOnClickListener {
+                MainActivity.EVENT_ON_CLICK_FIRST_IMAGE.value = 1
+            }
+
+            binding.ivSecondAnswer.setOnClickListener {
+                MainActivity.EVENT_ON_CLICK_SECOND_IMAGE.value = 2
+            }
         }
     }
 
