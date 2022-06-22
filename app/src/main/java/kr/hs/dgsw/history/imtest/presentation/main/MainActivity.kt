@@ -2,12 +2,15 @@ package kr.hs.dgsw.history.imtest.presentation.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kr.hs.dgsw.history.imtest.R
 import kr.hs.dgsw.history.imtest.databinding.ActivityMainBinding
 import kr.hs.dgsw.history.imtest.domain.model.question.Question
@@ -15,6 +18,7 @@ import kr.hs.dgsw.history.imtest.presentation.adapter.QuestionAdapter
 import java.lang.reflect.ParameterizedType
 import java.util.*
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     lateinit var viewModel: MainViewModel
@@ -23,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         performDataBinding()
-        initViewPager()
+
 
         with(viewModel) {
             EVENT_ON_CLICK_FIRST_IMAGE.observe(this@MainActivity) {
@@ -33,7 +37,22 @@ class MainActivity : AppCompatActivity() {
             EVENT_ON_CLICK_SECOND_IMAGE.observe(this@MainActivity) {
                 nextPage()
             }
+
+            lifecycleScope.launchWhenStarted {
+                getQuestionsState.collect { state ->
+                    if (state.questions.isNullOrEmpty()) {
+                        initViewPager(state.questions!!)
+                    }
+                    if (state.isLoading) {
+                    }
+                    if (state.error.isNotBlank()) {
+                        Toast.makeText(this@MainActivity, state.error, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         }
+
+
 
     }
 
@@ -42,41 +61,11 @@ class MainActivity : AppCompatActivity() {
         binding.vpQuestion.setCurrentItem(current + 1, true)
     }
 
-    private fun initViewPager() {
+    private fun initViewPager(questions: List<Question>) {
         binding.vpQuestion.isUserInputEnabled = false
         val questionAdapter = QuestionAdapter()
         binding.vpQuestion.adapter = questionAdapter
-        questionAdapter.submitList(
-            listOf(
-                Question("김기준 탁구 최민재한테 개처발림", 1,
-                    listOf(
-                        "https://i.ytimg.com/vi/SZ1P47nCpGU/maxresdefault.jpg",
-                        "https://i.ytimg.com/vi/1h2HltMeG0g/maxresdefault.jpg"
-                    )
-
-                ),
-                Question("김기준 탁구 최민재한테 개처발림", 2,
-                    listOf(
-                        "https://i.ytimg.com/vi/SZ1P47nCpGU/maxresdefault.jpg",
-                        "https://i.ytimg.com/vi/1h2HltMeG0g/maxresdefault.jpg"
-                    )
-
-                ),
-                Question("김기준 탁구 최민재한테 개처발림", 1,
-                    listOf(
-                        "https://i.ytimg.com/vi/SZ1P47nCpGU/maxresdefault.jpg",
-                        "https://i.ytimg.com/vi/1h2HltMeG0g/maxresdefault.jpg"
-                    )
-
-                ),
-                Question("김기준 탁구 최민재한테 개처발림", 2,
-                    listOf(
-                        "https://i.ytimg.com/vi/1h2HltMeG0g/maxresdefault.jpg",
-                        "https://i.ytimg.com/vi/SZ1P47nCpGU/maxresdefault.jpg"
-                    )
-                )
-            )
-        )
+        questionAdapter.submitList(questions)
     }
 
     private fun performDataBinding() {
