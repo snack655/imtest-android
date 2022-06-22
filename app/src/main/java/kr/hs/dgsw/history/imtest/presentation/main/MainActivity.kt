@@ -40,8 +40,8 @@ class MainActivity : AppCompatActivity() {
 
             lifecycleScope.launchWhenStarted {
                 getQuestionsState.collect { state ->
-                    if (state.questions.isNullOrEmpty()) {
-                        initViewPager(state.questions!!)
+                    if (!state.questions.isNullOrEmpty()) {
+                        initViewPager(state.questions)
                     }
                     if (state.isLoading) {
                     }

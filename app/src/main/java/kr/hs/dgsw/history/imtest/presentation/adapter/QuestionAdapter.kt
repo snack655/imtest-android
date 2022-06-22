@@ -2,11 +2,13 @@ package kr.hs.dgsw.history.imtest.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.compose.ui.unit.Constraints
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kr.hs.dgsw.history.imtest.R
+import kr.hs.dgsw.history.imtest.common.Constants
 import kr.hs.dgsw.history.imtest.databinding.ItemQuestionBinding
 import kr.hs.dgsw.history.imtest.domain.model.question.Question
 import kr.hs.dgsw.history.imtest.presentation.adapter.callback.QuestionDiffUtilCallback
@@ -19,17 +21,19 @@ class QuestionAdapter : ListAdapter<Question, QuestionAdapter.QuestionViewHolder
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Question) {
 
+            binding.tvQuestion.text = item.question
+
             Glide.with(binding.ivFirstAnswer.context)
-                .load(item.images[0])
+                .load(Constants.BASE_URL + "/" + item.images[0])
                 .error(R.drawable.default_img)
-                .centerCrop()
+                .fitCenter()
                 .into(binding.ivFirstAnswer)
 
             Glide.with(binding.ivSecondAnswer.context)
-                .load(item.images[1])
+                .load(Constants.BASE_URL + "/" + item.images[1])
                 .error(R.drawable.default_img)
-                .centerCrop()
-                .into(binding.ivFirstAnswer)
+                .fitCenter()
+                .into(binding.ivSecondAnswer)
 
             binding.ivFirstAnswer.setOnClickListener {
                 MainActivity.EVENT_ON_CLICK_FIRST_IMAGE.value = 1
