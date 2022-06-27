@@ -84,7 +84,52 @@ class MainActivity : AppCompatActivity() {
         binding.vpQuestion.isUserInputEnabled = false
         val questionAdapter = QuestionAdapter()
         binding.vpQuestion.adapter = questionAdapter
+
         questionAdapter.submitList(questions)
+        /*questionAdapter.submitList(
+            listOf(
+                Question(0, listOf(
+                    "https://i.ytimg.com/vi/SZ1P47nCpGU/maxresdefault.jpg",
+                    "https://i.ytimg.com/vi/SZ1P47nCpGU/maxresdefault.jpg"
+                ), "셈플입니다 히히호호 한국사1", 1),
+                Question(0, listOf(
+                    "https://i.ytimg.com/vi/SZ1P47nCpGU/maxresdefault.jpg",
+                    "https://i.ytimg.com/vi/SZ1P47nCpGU/maxresdefault.jpg"
+                ), "셈플입니다 히히호호 한국사2", 2),
+                Question(0, listOf(
+                    "https://i.ytimg.com/vi/SZ1P47nCpGU/maxresdefault.jpg",
+                    "https://i.ytimg.com/vi/SZ1P47nCpGU/maxresdefault.jpg"
+                ), "셈플입니다 히히호호 한국사3", 3),
+                Question(0, listOf(
+                    "https://i.ytimg.com/vi/SZ1P47nCpGU/maxresdefault.jpg",
+                    "https://i.ytimg.com/vi/SZ1P47nCpGU/maxresdefault.jpg"
+                ), "셈플입니다 히히호호 한국사4", 4),
+                Question(0, listOf(
+                    "https://i.ytimg.com/vi/SZ1P47nCpGU/maxresdefault.jpg",
+                    "https://i.ytimg.com/vi/SZ1P47nCpGU/maxresdefault.jpg"
+                ), "셈플입니다 히히호호 한국사5", 5),
+                Question(0, listOf(
+                    "https://i.ytimg.com/vi/SZ1P47nCpGU/maxresdefault.jpg",
+                    "https://i.ytimg.com/vi/SZ1P47nCpGU/maxresdefault.jpg"
+                ), "셈플입니다 히히호호 한국사6", 6),
+                Question(0, listOf(
+                    "https://i.ytimg.com/vi/SZ1P47nCpGU/maxresdefault.jpg",
+                    "https://i.ytimg.com/vi/SZ1P47nCpGU/maxresdefault.jpg"
+                ), "셈플입니다 히히호호 한국사7", 7),
+                Question(0, listOf(
+                    "https://i.ytimg.com/vi/SZ1P47nCpGU/maxresdefault.jpg",
+                    "https://i.ytimg.com/vi/SZ1P47nCpGU/maxresdefault.jpg"
+                ), "셈플입니다 히히호호 한국사8", 8),
+                Question(0, listOf(
+                    "https://i.ytimg.com/vi/SZ1P47nCpGU/maxresdefault.jpg",
+                    "https://i.ytimg.com/vi/SZ1P47nCpGU/maxresdefault.jpg"
+                ), "셈플입니다 히히호호 한국사9", 9),
+                Question(0, listOf(
+                    "https://i.ytimg.com/vi/SZ1P47nCpGU/maxresdefault.jpg",
+                    "https://i.ytimg.com/vi/SZ1P47nCpGU/maxresdefault.jpg"
+                ), "셈플입니다 히히호호 한국사10", 10),
+            )
+        )*/
     }
 
     private fun performDataBinding() {
@@ -96,11 +141,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkLastIndex() {
-        if (questions.lastIndex == binding.vpQuestion.currentItem) {
+        if (questions.size - 1 == binding.vpQuestion.currentItem) {
             val intent = Intent(this, ResultActivity::class.java)
             intent.putExtra("answerNum", countAnswer)
-            intent.putExtra("lastIdx", questions.lastIndex)
+            intent.putExtra("lastIdx", questions.size)
             startActivity(intent)
+            finish()
         }
     }
 

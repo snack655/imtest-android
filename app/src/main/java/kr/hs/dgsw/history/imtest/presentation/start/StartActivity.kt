@@ -21,11 +21,12 @@ class StartActivity : AppCompatActivity() {
         binding.tvStart.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 
     private fun performDataBinding() {
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_start)
         binding.lifecycleOwner = this
         binding.executePendingBindings()
     }
